@@ -1,20 +1,18 @@
 @charset "utf-8";
 
-/* normalize */
+/* 노멀라이즈 */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    list-style: none;
 }
 
 body {
+    background-color: #ffffff;
     color: #333333;
-    font-family: 'Malgun Gothic', AppleGothic, sans-serif;
+    font-family: 'Malgun Gothic', 'AppleGothic', sans-serif;
     font-size: 14px;
-}
-
-li {
-    list-style: none;
 }
 
 img {
@@ -37,77 +35,82 @@ a:hover {
     left: 0;
     top: -9999em;
     overflow: hidden;
+    /* 감춰줄 문구를 위해 입력 */
 }
 
-/* layout */
+/* 레이아웃 */
 .con {
     width: 1200px;
     margin: 0 auto;
+    /* 지정된 넓이로 감싸줌 */
 }
 
-/***** custom *****/
+/*** 커스텀 ***/
 /* header */
 #header {
-    position: relative;
-    z-index: 10;
+    display: flex; /* 헤더 영역에 배치된 로고와 메인메뉴(gnb)를 가로 정렬하기 위해 부모인 헤더에 display: flex;를 준다. */
     padding: 30px 0;
-}
-
-#header:after {
-    content: '';
-    display: block;
-    clear: both;
-}
-
-#header .logo {
-    float: left;
-}
-
-#header .gnb {
-    float: right;
-    margin-right: 20px;
-}
-
-#header .gnb>ul>li {
-    float: left;
-    width: 150px;
+    /* 로고와 메인메뉴 높이를 제외, 위아래 30px 적용하면 헤더 영역의 총 높이는 100px */
     position: relative;
+    z-index: 10; 
+    /* position: relative, z-index: 10;은 슬라이더영역에 헤더가 가려지지 않기 위함 */
 }
 
 #header a {
     text-decoration: none;
+    /* 노멀라이즈에서 호버하면 언더라인 생성 부분을 비적용시키기위함 */
     text-align: center;
     display: block;
+    /* = a는 인라인요소이므로 인라인요소는 크기값 설정이 안되기때문에 블럭요소로 바꿔줘야 높이값을 지정할 수 있다. */
     color: #373644;
 }
 
-#header .gnb>ul>li>a {
-    background-color: #d3d5db;
+#header .gnb {
+    margin-left: auto;
+    /* 부모에 flex가 적용되었을때 이렇게 입력하면 나머지 영역을 모두 가져가게됨(오른쪽끝으로 정렬) */
+    margin-right: 20px;
+}
+
+#header .gnb > ul {
+    display: flex;
+    width: 600px;
+}
+
+#header .gnb > ul > li {
+    flex: 1;
+    /* 부모에 flex를 입력하고 width값을 주었을때 해당 영역들을 같은비율로 분배함 */
+    position: relative;
+    /* 서브메뉴위치를 absolute 하기위해 부모인 헤더에 relative를 입력함 */
+}
+
+#header .gnb > ul > li > a {
     font-size: 16px;
-    border: 1px solid #bfc0c5;
+    background-color: #bcbcc0;
+    border: 1px solid #a7a7ac;
     line-height: 40px;
 }
 
-#header .gnb>ul>li>a.on {
+#header .gnb > ul > li > a.on {
     background-color: #373644;
-    border-color: #17161b;
+    border: 1px solid #2a2a36;
     color: #ffffff;
 }
 
 #header .gnb ul li ul {
     position: absolute;
+    /* 문제에서 슬라이더 위로 서브메뉴가 올라오도록 설정하기 위해 위치를 absolute 적용함 */
     left: 0;
     right: 0;
+    /* absolute 적용시, 왼/오른쪽 0으로 설정하면 가운데정렬됨 */
     background-color: rgba(255, 255, 255, 0.8);
 }
 
-#header .gnb ul li ul li a {
+#header .gnb ul li ul a {
     border-bottom: 1px solid #acacac;
-    font-size: 14px;
     line-height: 30px;
 }
 
-#header .gnb ul li ul li a:hover {
+#header .gnb ul li ul a:hover {
     background-color: #9c9999;
     border-bottom-color: #676767;
     color: #ffffff;
@@ -119,97 +122,40 @@ a:hover {
     overflow: hidden;
 }
 
-#slider > ul {
-    /* width: 3600px; */
+#slider ul {
     position: relative;
+    /* 슬라이더 적용을 위해 입력 */
 }
-
-/* 가로 슬라이드 사용할 시 추가 */
-/* #slider > ul:after {
-    content: '';
-    display: block;
-    clear: both;
-}
-
-#slider > ul > li {
-    float: left;
-} */
 
 /* contents */
 #contents {
+    display: flex;
+    /* 컨텐츠 영역의 요소들을 가로배치 */
     height: 200px;
     margin: 10px 0;
-    display: flex;
-    justify-content: space-between;
-}
-
-#contents section {
-    width: 33.3%;
-    float: left;
-}
-
-#contents>section:nth-of-type(2) {
-    margin: 0 10px;
 }
 
 #contents:after {
     content: '';
     display: block;
     clear: both;
+    /* = float을 줄때 부모 클래스에 위와같이 입력하면 CSS에 하나씩 clear: both를 입력할 필요가 없어 간편함. */
+}   
+/* *clear 속성: float 속성 해제하기
+clear: both는 취소하다 라는 개념으로 float: left/right와 짝궁 개념이다.
+float속성을 적용하면 그 이후에 오는 다른 요소들까지 똑같은 속성이 전달되어 둘러싼 형태가 되거나
+부유된 영역 아래(under)로 들어가게 된다.
+float 속성이 더 이상 사용하지 않고, 그 전으로 되돌리고 싶을때 사용하는 것이 clear: both 이다.
+
+float: left 를 해제하기 위해 clear: left 라고 지정하면 되지만
+float 속성 값을 하나씩 다 기억하기 번거로우므로 보통 clear: both 라고 지정한다. */
+
+#contents section {
+    flex: 1;
+    /* = 컨텐츠영역에 요소들을 같은 비율로 배치 */
 }
 
 /* news area */
-#contents .news {
-    position: relative;
-}
-
-#contents .news>h2 {
-    position: relative;
-    z-index: 999;
-    width: 90px;
-    height: 35px;
-    background-color: #eeeeee;
-    color: #373644;
-    font-size: 18px;
-    padding-top: 2.5px;
-    padding-bottom: 2.5px;
-    line-height: 29px;
-    text-align: center;
-    font-weight: normal;
-    float: left;
-}
-
-#contents .news ul {
-    position: absolute;
-    top: 34px;
-    left: 0px;
-    right: 0px;
-    border-top: 1px solid #dddddd;
-    padding: 16px 0 0 10px;
-}
-
-.notice li {
-    overflow: hidden;
-    line-height: 32px;
-}
-
-.notice li.active a {
-    color: #4139b1;
-    text-decoration: underline;
-}
-
-.notice li span {
-    float: right;
-    color: #717171;
-    margin-right: 10px;
-}
-
-#contents .news ul.gallery li {
-    float: left;
-    margin-top: 10px;
-    margin-right: 15px;
-}
-
 #contents .title {
     letter-spacing: -0.1rem;
     cursor: pointer;
@@ -222,69 +168,107 @@ a:hover {
     font-weight: bold;
 }
 
-/*banner & direct*/
-.banner,
-.direct {
-    overflow: hidden;
+#contents .news {
+    position: relative;
+    /* = ul의 위치를 absolute 하기 위해 부모영역에 relative 적용 */
+    
+    /* flex: 1; */
+
     display: flex;
-    justify-content: center;
-    align-items: center;
+    /* = news 영역에 있는 공지사항과 갤러리를 가로배치함 */
 }
 
-.banner>.title,
-.direct>.title {
-    position: absolute;
-    width: 100px;
-    padding: 14px 0;
-    text-align: center;
-    color: #ffffff;
-    background-color: rgb(55, 54, 68, 0.6);
-}
-
-.banner>.title:hover,
-.direct>.title:hover {
+/* news안에 있는 타이틀 */
+#contents .news > h2 {
+    width: 90px;
+    height: 35px;
+    background-color: #eeeeee;
     color: #373644;
-    background-color: rgba(255, 255, 255, 0.5);
+    font-size: 18px;
+    padding: 2.5px 0;
+    line-height: 29px;
+    text-align: center; 
+    font-weight: normal;
+}
+/* news영역안에 있는 공지시항, 갤러리 리스트(ul) */
+#contents .news ul {
+    position: absolute;
+    top: 34px;
+    left: 0;
+    right: 0;
+    /* = 공지사항과 갤러리의 리스트영역 위치 설정 */
+    border-top: 1px solid #dddddd;
+    padding: 16px 0 0 10px;
+}
+
+.notice li {
+    display: flex;
+    justify-content: space-between;
+    /* = 위에 두개를 함께 입력할때 주축에서 일정한 간격을 두고 양끝 정렬 배치
+    - space-around : 모든 요소가 동일한 여백을 갖도록 배치
+    - center : 주축의 중심부에 배치 */
+    line-height: 32px;
+}
+
+.notice li.active a {
+    color: #4139b1;
+    text-decoration: underline;
+    /* = 공지사항 첫번째 항목에만 밑줄 */
+}
+
+/* 공지사항안에 날짜부분 */
+.notice li span {
+    color: #717171;
+    margin-right: 10px;
+}
+
+.gallery li {
+    float: left;
+    margin-top: 10px;
+    margin-right: 15px;
+}
+
+.banner {
+    margin: 0 10px;
+    /* = 배너 양쪽으로 간격설정 */
+}
+
+.banner, .quick {
+    overflow: hidden;
 }
 
 /* footer */
 #footer {
-    padding-bottom: 30px;
-    background-color: #eee;
+    display: flex;
+    justify-content: space-between;
+    background-color: #eeeeee;
     height: 100px;
 }
 
-#footer:after {
-    content: '';
-    display: block;
-    clear: both;
+#footer .logo_btm {
+    margin-left: 10px;
+    margin-top: 30px;
+    /* = 하단 로고 이미지의 높이가 40px이므로 위에 30px을 띄우면 전체높이 100px에서 가운데로 배치됨 */
 }
 
-#footer .logo_btm {
-    float: left;
-    margin-top: 30px;
-    margin-left: 10px;
+#footer .copy {
+    line-height: 100px;
+    /* = 중앙으로 배치하기 위함 */
+    color: #777777;
 }
 
 #footer .sns {
-    float: right;
-    margin-top: 22.5px;
+    display: flex;
     padding-right: 8px;
-}
-
-#footer .sns li {
-    float: left;
-    margin-left: 8px;
+    margin-top: 22.5px;
+    /* = sns이미지들의 높이가 55px이므로 위에 22.5px을 띄우면 전체높이 100px에서 가운데로 배치됨 */
 }
 
 #footer .sns img {
     border-radius: 50%;
-}
-
-#footer .copy {
-    text-align: center;
-    line-height: 100px;
-    color: #777777;
+    /* = sns이미지들을 원형으로 만들기 위해 가장자리 설정 */
+    margin-left: 8px;
+    /* = 간격조절 */
 }
 
 /* popup */
@@ -295,7 +279,8 @@ a:hover {
     top: 0;
     bottom: 0;
     z-index: 1000;
-    background-color: rgba(0,0,0,0.6);
+    /* = 팝업창 바로 밑에 깔리도록 설정 */
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .popup {
@@ -303,10 +288,12 @@ a:hover {
     left: 50%;
     top: 120px;
     z-index: 2000;
+    /* = 맨앞으로 가져오기 */
     width: 500px;
     height: 400px;
     padding: 20px;
     margin-left: -250px;
+    /* = 중앙배치 */
     background-color: #ffffff;
 }
 
@@ -315,7 +302,7 @@ a:hover {
     border-bottom: 1px solid #777777;
     color: #373644;
     font-size: 18px;
-    line-height: 46px;
+    line-height: 50px;
 }
 
 .popup p {
